@@ -1,7 +1,10 @@
+import { ShopLayout } from "@/components/layout"
 
 
 export default function Home() {
   return (
-    <h1>Hello World</h1>
+    <ShopLayout title={'Mira-Shop - Home'} pageDescription={"Everything you'r finding"}>
+      <h1>Hello World</h1>
+    </ShopLayout>
   )
 }

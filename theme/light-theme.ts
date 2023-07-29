@@ -7,34 +7,85 @@ import { isWhiteSpaceLike } from 'typescript';
 const lightTheme = createTheme({
     palette: {
         mode: 'light',
-        background: {
-            default: grey[300]
-        },
         primary: {
-            main: '#4a148c'
+            main: '##1E1E1E'
         },
         secondary: {
-            main: '#19857b'
-        },
-        error: {
-            main: red.A400
-        },
+            main: '#3A64D8'
+        }
     },
-    typography: {
-        fontFamily: roboto.style.fontFamily,
-    },
-    //editar de forma global estilos de componentes Mui
     components: {
+        MuiLink: {
+            defaultProps: {
+                underline: 'none',
+            },
+        },
         MuiAppBar: {
+            defaultProps: {
+                elevation: 0,
+                position: 'fixed',
+            },
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'white',
+                    height: 60
+                },
+            }
+        },
+
+        MuiTypography: {
+            styleOverrides: {
+                h1: {
+                    fontSize: 30,
+                    fontWeight: 600
+                },
+                h2: {
+                    fontSize: 20,
+                    fontWeight: 400
+                },
+                subtitle1: {
+                    fontSize: 18,
+                    fontWeight: 600
+                }
+            }
+        },
+
+
+        MuiButton: {
+            defaultProps: {
+                variant: 'contained',
+                size: 'small',
+                disableElevation: true,
+            },
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
+                    boxShadow: 'none',
+                    borderRadius: 10,
+                    ":hover": {
+                        backgroundColor: 'rgba(0,0,0,0.05)',
+                        transition: 'all 0.3s ease-in-out'
+                    }
+                }
+            }
+        },
+
+
+        MuiCard: {
             defaultProps: {
                 elevation: 0
             },
             styleOverrides: {
                 root: {
-                    backgroundColor: '#2f2357'
+                    boxShadow: '0px 5px 5px rgba(0,0,0,0.05)',
+                    borderRadius: '10px',
                 }
             }
-        },
-    }
+        }
+
+    },
+    typography: {
+        fontFamily: roboto.style.fontFamily,
+    },
 });
 export default lightTheme;
