@@ -2,6 +2,8 @@
 import Head from 'next/head';
 import React, { FC } from 'react'
 import Navbar from '../ui/Navbar';
+import { SideMenu } from '../ui/SideMenu';
+import { Box } from '@mui/material';
 
 
 interface Props {
@@ -12,7 +14,7 @@ interface Props {
 }
 
 
-export const ShopLayout: FC<Props>= ({ children, title, pageDescription, imageFullUrl }) => {
+export const ShopLayout: FC<Props> = ({ children, title, pageDescription, imageFullUrl }) => {
     return (
         <>
             <Head>
@@ -33,11 +35,9 @@ export const ShopLayout: FC<Props>= ({ children, title, pageDescription, imageFu
             </Head>
 
             <nav>
-               <Navbar/>
+                <Navbar />
             </nav>
-
-            {/* <SideMenu /> */}
-
+            <SideMenu />
             <main style={{
                 margin: '80px auto',
                 maxWidth: '1440px',
