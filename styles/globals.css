@@ -23,6 +23,9 @@
 .circular-btn {
   border-radius: 30px;
 }
+.circular-btn-maxima {
+  max-width: 150px;
+}
 
 .circular-btn:hover {
   background-color: #274494;
