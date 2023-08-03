@@ -1,5 +1,6 @@
 import { MoreVert, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
-import { AppBar, Badge, Box, Button, IconButton, Link, Toolbar, Typography, useMediaQuery, Theme, ThemeProvider, useTheme } from '@mui/material'
+import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, Theme, ThemeProvider, useTheme } from '@mui/material'
+import Link from 'next/link';
 import React from 'react'
 
 const Navbar = () => {
@@ -14,11 +15,13 @@ const Navbar = () => {
         <AppBar sx={{ borderBottom: { xs: 'none', sm: '1px solid #e0e0e0' } }}>
             <Toolbar>
 
-                <Link display='flex' alignItems='center' href='/'>
-                    <Typography variant='h6'>Teslo |</Typography>
-                    <Typography sx={{ ml: 0.5 }}>Shop</Typography>
-                </Link>
+                <Link style={{ textDecoration: 'none', color: '#01060f' }} href='/'>
+                    <Box display='flex' alignItems='center' >
+                        <Typography variant='h6'>Teslo |</Typography>
+                        <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+                    </Box>
 
+                </Link>
 
                 <Box flex={1} />
 
@@ -52,7 +55,7 @@ const Navbar = () => {
                         </Badge>
                     </IconButton>
                 </Link>
-                
+
                 {isMobile ? (
                     <IconButton>
                         <MoreVert />
