@@ -56,3 +56,8 @@ a:hover {
   font-weight: 600;
   text-decoration: underline;
 }
+
+
+.striped-row{
+  background-color: #e1f5fe;
+}
