@@ -8,6 +8,9 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
 
+    //para garantizar que la el texto se muestre hasta que la imagen este completamente cargada
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+
     const [isHovered, setIsHovered] = useState(false);
 
     const productImage = useMemo(() => {
@@ -33,13 +36,15 @@ export const ProductCard: FC<Props> = ({ product }) => {
                             className='fadeIn'
                             image={productImage}
                             alt={product.title}
+                            // exclusivo de card media, evento que se dispara al cargar el recurso
+                            onLoad={ () => setIsImageLoaded(true)}
                         />
 
                     </CardActionArea>
                 </Link>
             </Card>
 
-            <Box sx={{ mt: 1 }} className='fadeIn'>
+            <Box sx={{ mt: 1, display: isImageLoaded ? 'block' : 'none' }} className='fadeIn'>
                 <Typography fontWeight={700}>{product.title}</Typography>
                 <Typography fontWeight={500}>{`$${product.price}`}</Typography>
             </Box>

@@ -1,6 +1,5 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
-
-import { initialData } from '../../database/products';
+import { initialData } from '@/db/seed-product';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
 import { ItemCounter } from '@/components/ui';
 import { ShopLayout } from '@/components/layout';
