@@ -7,7 +7,7 @@ import { Typography } from "@mui/material"
 
 export default function HomePage() {
 
-  const { products, isLoading } = useProducts('/product');
+  const { products, isLoading } = useProducts('/products');
 
   return (
     <ShopLayout title={'Mira-Shop - Home'} pageDescription={"Everything you'r finding"}>

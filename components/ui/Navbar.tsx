@@ -1,9 +1,12 @@
+import { useRouter } from 'next/router';
 import { MoreVert, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
 import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, Theme, ThemeProvider, useTheme } from '@mui/material'
 import Link from 'next/link';
 import React from 'react'
 
 const Navbar = () => {
+
+    const { asPath, push } = useRouter();
 
     // ways to handle mobile detection
     // const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
@@ -28,17 +31,17 @@ const Navbar = () => {
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
 
                     <Link href='/category/men'>
-                        <Button>Hombres</Button>
+                        <Button color={ asPath === '/category/men' ? 'info':'primary'}>Hombres</Button>
                     </Link>
 
 
                     <Link href='/category/women'>
-                        <Button>Mujeres</Button>
+                        <Button color={ asPath === '/category/women' ? 'info':'primary'}>Mujeres</Button>
                     </Link>
 
 
                     <Link href='/category/kid'>
-                        <Button>Niños</Button>
+                        <Button color={ asPath === '/category/kid' ? 'info':'primary'}>Niños</Button>
                     </Link>
 
                 </Box>
