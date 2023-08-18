@@ -2,7 +2,8 @@ import { useRouter } from 'next/router';
 import { MoreVert, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
 import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, Theme, ThemeProvider, useTheme } from '@mui/material'
 import Link from 'next/link';
-import React from 'react'
+import React, { useContext } from 'react'
+import { UiContext } from '@/context';
 
 const Navbar = () => {
 
@@ -12,6 +13,7 @@ const Navbar = () => {
     // const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { toggleSideMenu } = useContext( UiContext );
 
 
     return (
@@ -60,11 +62,11 @@ const Navbar = () => {
                 </Link>
 
                 {isMobile ? (
-                    <IconButton>
+                    <IconButton  onClick={ toggleSideMenu }>
                         <MoreVert />
                     </IconButton>
                 ) : (
-                    <Button>
+                    <Button  onClick={ toggleSideMenu }>
                         Menu
                     </Button>
                 )}
