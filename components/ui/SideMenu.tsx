@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
 import { useContext, useState } from "react";
 import { UiContext } from "@/context";
@@ -12,6 +12,11 @@ export const SideMenu = () => {
     const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    // ways to handle mobile detection
+    // const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const onSearchTerm = () => {
         if (searchTerm.trim().length === 0) return;
@@ -28,13 +33,12 @@ export const SideMenu = () => {
             open={isMenuOpen}
             anchor='right'
             sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
-            onClose={ toggleSideMenu }
+            onClose={toggleSideMenu}
         >
-            <Box sx={{ width: 250, paddingTop: 5 }}>
+            <Box sx={{ width: 250, paddingTop: 0 }}>
 
                 <List>
-
-                    <ListItem>
+                    {isMobile ? (<ListItem>
                         <Input
                             autoFocus
                             value={searchTerm}
@@ -52,16 +56,22 @@ export const SideMenu = () => {
                                 </InputAdornment>
                             }
                         />
-                    </ListItem>
+                    </ListItem>) :
+                        <Box display='flex' alignItems='center' justifyContent={'center'} sx={{ my: 1 }} >
+                            <Typography variant='h5' fontWeight={'bold'}>Teslo |</Typography>
+                            <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+                        </Box>
+                    }
 
-                    <ListItem >
+
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <AccountCircleOutlined />
                         </ListItemIcon>
                         <ListItemText primary={'Perfil'} />
                     </ListItem>
 
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <ConfirmationNumberOutlined />
                         </ListItemIcon>
@@ -70,7 +80,7 @@ export const SideMenu = () => {
 
 
                     <ListItem
-                        sx={{ display: { xs: '', sm: 'none',  cursor: 'pointer' } }}
+                        sx={{ display: { xs: '', sm: 'none', cursor: 'pointer' } }}
                         onClick={() => navigateTo('/category/men')}
                     >
                         <ListItemIcon>
@@ -80,7 +90,7 @@ export const SideMenu = () => {
                     </ListItem>
 
                     <ListItem
-                        sx={{ display: { xs: '', sm: 'none',  cursor: 'pointer' } }}
+                        sx={{ display: { xs: '', sm: 'none', cursor: 'pointer' } }}
                         onClick={() => navigateTo('/category/women')}
                     >
                         <ListItemIcon>
@@ -90,7 +100,7 @@ export const SideMenu = () => {
                     </ListItem>
 
                     <ListItem
-                        sx={{ display: { xs: '', sm: 'none',  cursor: 'pointer' } }}
+                        sx={{ display: { xs: '', sm: 'none', cursor: 'pointer' } }}
                         onClick={() => navigateTo('/category/kid')}
                     >
                         <ListItemIcon>
@@ -100,14 +110,14 @@ export const SideMenu = () => {
                     </ListItem>
 
 
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <VpnKeyOutlined />
                         </ListItemIcon>
                         <ListItemText primary={'Ingresar'} />
                     </ListItem>
 
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <LoginOutlined />
                         </ListItemIcon>
@@ -119,20 +129,20 @@ export const SideMenu = () => {
                     <Divider />
                     <ListSubheader>Admin Panel</ListSubheader>
 
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <CategoryOutlined />
                         </ListItemIcon>
                         <ListItemText primary={'Productos'} />
                     </ListItem>
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <ConfirmationNumberOutlined />
                         </ListItemIcon>
                         <ListItemText primary={'Ordenes'} />
                     </ListItem>
 
-                    <ListItem >
+                    <ListItem sx={{ cursor: 'pointer' }}>
                         <ListItemIcon>
                             <AdminPanelSettings />
                         </ListItemIcon>
