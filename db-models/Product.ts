@@ -1,4 +1,4 @@
-import { IProduct } from '@/components/interfaces/product';
+import { IProduct } from '@/interfaces/product';
 import mongoose, { Schema, model, Model } from 'mongoose';
 
 

@@ -1,5 +1,5 @@
 import useSWR, { SWRConfiguration } from 'swr';
-import { IProduct } from '@/components/interfaces/product';
+import { IProduct } from '@/interfaces/product';
 
 
 

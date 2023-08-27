@@ -1,6 +1,6 @@
 import { db } from './';
 import { Product } from '@/db-models';
-import { IProduct } from '@/components/interfaces/product';
+import { IProduct } from '@/interfaces/product';
 
 
 

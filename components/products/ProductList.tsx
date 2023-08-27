@@ -3,7 +3,7 @@ import { Grid } from '@mui/material'
 
 
 import { ProductCard } from './ProductCard';
-import { IProduct } from '../interfaces/product';
+import { IProduct } from '../../interfaces/product';
 
 interface Props {
     products: IProduct[];

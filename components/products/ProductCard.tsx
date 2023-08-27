@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
-import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link } from '@mui/material'
-import { IProduct } from '../interfaces/product';
+import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link, Chip } from '@mui/material'
+import { IProduct } from '../../interfaces/product';
 
 interface Props {
     product: IProduct;
@@ -28,16 +28,25 @@ export const ProductCard: FC<Props> = ({ product }) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             <Card>
-                <Link href={`/product/${ product.slug }`}>
+                <Link href={`/product/${product.slug}`}>
                     {/* card media ayuda a cargar bajo demanda */}
                     <CardActionArea>
+                    {
+                            (product.inStock === 0 ) && (
+                                <Chip 
+                                    color="warning"
+                                    label="Solt Out"
+                                    sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
+                                />
+                            )
+                        }
                         <CardMedia
                             component='img'
                             className='fadeIn'
                             image={productImage}
                             alt={product.title}
                             // exclusivo de card media, evento que se dispara al cargar el recurso
-                            onLoad={ () => setIsImageLoaded(true)}
+                            onLoad={() => setIsImageLoaded(true)}
                         />
 
                     </CardActionArea>

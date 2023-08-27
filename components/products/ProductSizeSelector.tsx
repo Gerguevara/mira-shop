@@ -1,29 +1,32 @@
 import { FC } from 'react';
 import { Box, Button } from '@mui/material';
-import { ISize } from '../interfaces/product';
+import { ISize } from '../../interfaces/product';
 
 
 
 interface Props {
     selectedSize?: ISize;
     sizes: ISize[];
+    // Method
+    onSelectedSize: (size: ISize) => void;
 }
 
 // TODO: probar mejor con un Grid para que sea responsive
 
-export const SizeSelector: FC<Props> = ({ selectedSize, sizes }) => {
+export const SizeSelector: FC<Props> = ({ selectedSize, sizes, onSelectedSize }) => {
     return (
-        <Box display='flex' flexDirection={'row'} marginY={2}> 
+        <Box   sx={{ my: 1 }}>
             {
                 sizes.map(size => (
-                    <Box key={size} mr={1} >
-                        <Button
-                            size='small'
-                            color={selectedSize === size ? 'primary' : 'info'}
-                        >
-                            {size}
-                        </Button>
-                    </Box>
+                    <Button
+                        sx={{ m:0.5}}
+                        key={size}
+                        size='small'
+                        color={selectedSize === size ? 'info' : 'inherit'}
+                        onClick={() => onSelectedSize(size)}
+                    >
+                        {size}
+                    </Button>
                 ))
             }
         </Box>

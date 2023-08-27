@@ -1,6 +1,6 @@
 import type { NextPage, GetServerSideProps } from 'next';
 import { Typography,Box } from '@mui/material';
-import { IProduct } from '@/components/interfaces/product';
+import { IProduct } from '@/interfaces/product';
 import { ShopLayout } from '@/components/layout';
 import { ProductList } from '@/components/products';
 import { dbProducts } from '@/db';

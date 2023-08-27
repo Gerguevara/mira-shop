@@ -8,17 +8,17 @@ import { UiContext } from '@/context';
 const Navbar = () => {
 
     const { asPath, push } = useRouter();
-    const { toggleSideMenu } = useContext( UiContext );
+    const { toggleSideMenu } = useContext(UiContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const onSearchTerm = () => {
-        if( searchTerm.trim().length === 0 ) return;
-        push(`/search/${ searchTerm }`);
+        if (searchTerm.trim().length === 0) return;
+        push(`/search/${searchTerm}`);
     }
 
 
-    const handleCancel =()=>{
+    const handleCancel = () => {
         setSearchTerm('')
         setIsSearchVisible(false)
     }
@@ -43,66 +43,67 @@ const Navbar = () => {
 
                 <Box flex={1} />
 
-
-
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {/* 
+                 si la caja de texto esta abierta, se oculpan estos enlaces, sino aplica su logica 
+                 display condicional css */}
+                <Box sx={{ display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' } }}  className='fadeIn'>
 
                     <Link href='/category/men'>
-                        <Button color={ asPath === '/category/men' ? 'info':'primary'}>Hombres</Button>
+                        <Button color={asPath === '/category/men' ? 'info' : 'primary'}>Hombres</Button>
                     </Link>
 
 
                     <Link href='/category/women'>
-                        <Button color={ asPath === '/category/women' ? 'info':'primary'}>Mujeres</Button>
+                        <Button color={asPath === '/category/women' ? 'info' : 'primary'}>Mujeres</Button>
                     </Link>
 
 
                     <Link href='/category/kid'>
-                        <Button color={ asPath === '/category/kid' ? 'info':'primary'}>Niños</Button>
+                        <Button color={asPath === '/category/kid' ? 'info' : 'primary'}>Niños</Button>
                     </Link>
 
                 </Box>
 
                 <Box flex={1} />
-                                {/* Pantallas pantallas grandes */}
-                                {
-                    isSearchVisible 
+                {/* Pantallas pantallas grandes */}
+                {
+                    isSearchVisible
                         ? (
                             <Input
                                 sx={{ display: { xs: 'none', sm: 'flex' } }}
                                 className='fadeIn'
                                 autoFocus
-                                value={ searchTerm }
-                                onChange={ (e) => setSearchTerm( e.target.value ) }
-                                onKeyDown={ (e) => e.key === 'Enter' ? onSearchTerm() : null }
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' ? onSearchTerm() : null}
                                 type='text'
                                 placeholder="Buscar..."
                                 endAdornment={
                                     <InputAdornment position="end">
-                                        <IconButton onClick={ () => handleCancel()}>
+                                        <IconButton onClick={() => handleCancel()}>
                                             <ClearOutlined />
                                         </IconButton>
                                     </InputAdornment>
                                 }
                             />
                         )
-                    : 
-                    (
-                        <IconButton 
-                            onClick={ () => setIsSearchVisible(true) }
-                            className="fadeIn"
-                            sx={{ display: { xs: 'none', sm: 'flex' } }}
-                        >
-                            <SearchOutlined />
-                        </IconButton>
-                    )
+                        :
+                        (
+                            <IconButton
+                                onClick={() => setIsSearchVisible(true)}
+                                className="fadeIn"
+                                sx={{ display: { xs: 'none', sm: 'flex' } }}
+                            >
+                                <SearchOutlined />
+                            </IconButton>
+                        )
                 }
 
 
                 {/* Pantallas pequeñas */}
                 <IconButton
                     sx={{ display: { xs: 'flex', sm: 'none' } }}
-                    onClick={ toggleSideMenu }
+                    onClick={toggleSideMenu}
                 >
                     <SearchOutlined />
                 </IconButton>
@@ -115,11 +116,11 @@ const Navbar = () => {
                 </Link>
 
                 {isMobile ? (
-                    <IconButton  onClick={ toggleSideMenu }>
+                    <IconButton onClick={toggleSideMenu}>
                         <MoreVert />
                     </IconButton>
                 ) : (
-                    <Button  onClick={ toggleSideMenu }>
+                    <Button onClick={toggleSideMenu}>
                         Menu
                     </Button>
                 )}

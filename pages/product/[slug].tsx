@@ -1,11 +1,14 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
-import { initialData } from '@/db/seed-product';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
 import { ItemCounter } from '@/components/ui';
 import { ShopLayout } from '@/components/layout';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { dbProducts } from '@/db';
-import { IProduct } from '@/components/interfaces/product';
+import { IProduct, ISize } from '@/interfaces/product';
+import { useContext, useState } from 'react';
+import { CartContext } from '@/context/cart';
+import { useRouter } from 'next/router';
+import { ICartProduct } from '@/interfaces';
 
 
 
@@ -15,6 +18,45 @@ interface Props {
   
 
 const ProductPage:NextPage<Props> = ({ product }) => {
+
+  const router = useRouter();
+  const { addProductToCart } = useContext( CartContext )
+
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    image: product.images[0],
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantity: 1,
+  })
+
+  const selectedSize = ( size: ISize ) => {
+    setTempCartProduct( (currentProduct:ICartProduct ) => ({
+      ...currentProduct,
+      size
+    }));
+  }
+
+  const onUpdateQuantity = ( quantity: number ) => {
+    setTempCartProduct( (currentProduct: ICartProduct) => ({
+      ...currentProduct,
+      quantity
+    }));
+  }
+
+
+  const onAddProduct = () => {
+
+    if ( !tempCartProduct.size ) { return; }
+
+    addProductToCart(tempCartProduct);
+    router.push('/cart');
+  }
+
+
     return (
         <ShopLayout title={product.title} pageDescription={product.description}>
 
@@ -36,18 +78,39 @@ const ProductPage:NextPage<Props> = ({ product }) => {
                         {/* Cantidad */}
                         <Box sx={{ my: 2 }}>
                             <Typography variant='subtitle2'>Cantidad</Typography>
-                            <ItemCounter />
+                            <ItemCounter
+                               currentValue={ tempCartProduct.quantity }
+                               updatedQuantity={ onUpdateQuantity  }
+                               maxValue={ product.inStock > 10 ? 10: product.inStock}
+                            />
                             <SizeSelector
-                                // selectedSize={ product.sizes[2] } 
-                                sizes={product.sizes}
+                                sizes={ product.sizes }
+                                selectedSize={ tempCartProduct.size }
+                                onSelectedSize={ selectedSize }
                             />
                         </Box>
 
 
                         {/* Agregar al carrito */}
-                        <Button color="secondary" className='circular-btn circular-btn-maxima'>
-                            Agregar al carrito
-                        </Button>
+                          {
+                            (product.inStock > 0)
+                            ? (
+                                <Button 
+                                  color="secondary" 
+                                  className='circular-btn'
+                                  onClick={ onAddProduct }
+                                >
+                                  {
+                                    tempCartProduct.size
+                                      ? 'Agregar al carrito'
+                                      : 'Seleccione una talla'
+                                  }
+                                </Button>
+                            )
+                            : (
+                              <Chip label="No hay disponibles" color="error" variant='outlined' />
+                            )
+                          }
 
                         {/* <Chip label="No hay disponibles" color="error" variant='outlined' /> */}
 
@@ -118,6 +181,10 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 export default ProductPage
 
+
+function addProductToCart(tempCartProduct: any) {
+  throw new Error('Function not implemented.');
+}
 // getServerSideProps 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
