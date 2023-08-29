@@ -1,16 +1,13 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Box, Button, CardActionArea, CardMedia, Grid, Typography } from '@mui/material';
 
 import { initialData } from '@/db/seed-product';
 
 import { ItemCounter } from '../ui';
 import Link from 'next/link';
+import { CartContext } from '@/context/cart';
+import { ICartProduct } from '@/interfaces';
 
-const productsInCart = [
-    initialData.products[0],
-    initialData.products[1],
-    initialData.products[2],
-]
 
 interface Props {
     editable?: boolean;
@@ -18,10 +15,18 @@ interface Props {
 
 export const CartList: FC<Props> = ({ editable = false }) => {
 
+    const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
+
+    const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
+        product.quantity = newQuantityValue;
+        updateCartQuantity( product );
+    }
+
+
     return (
         <>
             {
-                productsInCart.map(product => (
+                cart.map(product => (
                     <Grid container spacing={2} key={product.slug} sx={{ mb: 1 }}>
                         <Grid item xs={3}>
                             {/* TODO: llevar a la página del producto */}
@@ -29,7 +34,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
                                 <Link href="/product/slug">
                                     <CardActionArea>
                                         <CardMedia
-                                            image={`/products/${product.images[0]}`}
+                                            image={`/products/${product.image}`}
                                             component='img'
                                             sx={{ borderRadius: '5px' }}
                                         />
@@ -44,7 +49,9 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 
                                 {
                                     editable
-                                        ? <ItemCounter />
+                                        ? <ItemCounter currentValue={0} maxValue={0} updatedQuantity={function (newValue: number): void {
+                                            throw new Error('Function not implemented.');
+                                        } } />
                                         : <Typography variant='h5'>3 items</Typography>
                                 }
 

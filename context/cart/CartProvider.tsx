@@ -29,8 +29,9 @@ export const CartProvider:FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( cartReducer , CART_INITIAL_STATE );
 
-    // Efecto
+    // Efecto carga el carrito con aritculos guardados en cookies al iniciar
     useEffect(() => {
+        // validacion con try catch por si no la cookie fue manipulada y no se puede parsear, se hace un reset a vacio
         try {
             const cookieProducts = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ): []
             dispatch({ type: '[Cart] - LoadCart from cookies | storage', payload: cookieProducts });
@@ -39,11 +40,12 @@ export const CartProvider:FC<Props> = ({ children }) => {
         }
     }, []);
 
-    
+       // Guarda el carrito con los aritculos cookies
     useEffect(() => {
       Cookie.set('cart', JSON.stringify( state.cart ));
     }, [state.cart]);
 
+    // actualiza otros parametros cada que el state del carrito cabia
 
     useEffect(() => {
         
