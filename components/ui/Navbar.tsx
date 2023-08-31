@@ -4,11 +4,13 @@ import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography, useMediaQu
 import Link from 'next/link';
 import React, { useContext, useState } from 'react'
 import { UiContext } from '@/context';
+import { CartContext } from '@/context/cart';
 
 const Navbar = () => {
 
     const { asPath, push } = useRouter();
     const { toggleSideMenu } = useContext(UiContext);
+    const { numberOfItems } = useContext( CartContext );
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
 
@@ -109,7 +111,7 @@ const Navbar = () => {
                 </IconButton>
                 <Link href="/cart">
                     <IconButton>
-                        <Badge badgeContent={2} color="secondary">
+                        <Badge badgeContent={numberOfItems} color="secondary">
                             <ShoppingCartOutlined />
                         </Badge>
                     </IconButton>

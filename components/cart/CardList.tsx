@@ -1,12 +1,9 @@
 import { FC, useContext } from 'react';
 import { Box, Button, CardActionArea, CardMedia, Grid, Typography } from '@mui/material';
-
-import { initialData } from '@/db/seed-product';
-
-import { ItemCounter } from '../ui';
 import Link from 'next/link';
 import { CartContext } from '@/context/cart';
 import { ICartProduct } from '@/interfaces';
+import { ItemCounter } from '../ui';
 
 
 interface Props {
@@ -19,7 +16,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 
     const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
         product.quantity = newQuantityValue;
-        updateCartQuantity( product );
+        updateCartQuantity(product);
     }
 
 
@@ -27,32 +24,38 @@ export const CartList: FC<Props> = ({ editable = false }) => {
         <>
             {
                 cart.map(product => (
-                    <Grid container spacing={2} key={product.slug} sx={{ mb: 1 }}>
+                    <Grid container spacing={2} key={product.slug + product.size} sx={{ mb: 1 }}>
                         <Grid item xs={3}>
                             {/* TODO: llevar a la página del producto */}
-                         
-                                <Link href="/product/slug">
-                                    <CardActionArea>
-                                        <CardMedia
-                                            image={`/products/${product.image}`}
-                                            component='img'
-                                            sx={{ borderRadius: '5px' }}
-                                        />
-                                    </CardActionArea>
-                                </Link>
-                    
+
+                            <Link href={`/product/${product.slug}`}>
+                                <CardActionArea>
+                                    <CardMedia
+                                        image={`/products/${product.image}`}
+                                        component='img'
+                                        sx={{ borderRadius: '5px' }}
+                                    />
+                                </CardActionArea>
+                            </Link>
+
                         </Grid>
                         <Grid item xs={7}>
                             <Box display='flex' flexDirection='column'>
                                 <Typography variant='body1'>{product.title}</Typography>
-                                <Typography variant='body1'>Talla: <strong>M</strong></Typography>
+                                <Typography variant='body1'>Talla: <strong>{product.size}</strong></Typography>
 
                                 {
                                     editable
-                                        ? <ItemCounter currentValue={0} maxValue={0} updatedQuantity={function (newValue: number): void {
-                                            throw new Error('Function not implemented.');
-                                        } } />
-                                        : <Typography variant='h5'>3 items</Typography>
+                                        ? (
+                                            <ItemCounter
+                                                currentValue={product.quantity}
+                                                maxValue={10}
+                                                updatedQuantity={(value) => onNewCartQuantityValue(product, value)}
+                                            />
+                                        )
+                                        : (
+                                            <Typography variant='h5'>{product.quantity} {product.quantity > 1 ? 'productos' : 'producto'}</Typography>
+                                        )
                                 }
 
                             </Box>
@@ -62,7 +65,11 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 
                             {
                                 editable && (
-                                    <Button variant='text' color='secondary' >
+                                    <Button
+                                        variant='text'
+                                        color='secondary'
+                                        onClick={() => removeCartProduct(product)}
+                                    >
                                         Remover
                                     </Button>
                                 )

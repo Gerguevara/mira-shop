@@ -20,6 +20,7 @@ interface Props {
 const ProductPage:NextPage<Props> = ({ product }) => {
 
   const router = useRouter();
+
   const { addProductToCart } = useContext( CartContext )
 
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
@@ -58,75 +59,75 @@ const ProductPage:NextPage<Props> = ({ product }) => {
 
 
     return (
-        <ShopLayout title={product.title} pageDescription={product.description}>
+     <ShopLayout title={ product.title } pageDescription={ product.description }>
+    
+      <Grid container spacing={3}>
 
-            <Grid container spacing={3}>
+        <Grid item xs={12} sm={ 7 }>
+          <ProductSlideshow 
+            images={ product.images }
+          />
+        </Grid>
 
-                <Grid item xs={12} sm={7}>
-                    <ProductSlideshow
-                        images={ product.images }
-                    />
-                </Grid>
+        <Grid item xs={ 12 } sm={ 5 }>
+          <Box display='flex' flexDirection='column'>
 
-                <Grid item xs={12} sm={5}>
-                    <Box display='flex' flexDirection='column'>
+            {/* titulos */}
+            <Typography variant='h1' component='h1'>{ product.title }</Typography>
+            <Typography variant='subtitle1' component='h2'>{ `$${product.price}` }</Typography>
 
-                        {/* titulos */}
-                        <Typography variant='h1' component='h1'>{product.title}</Typography>
-                        <Typography variant='subtitle1' component='h2'>{`$${product.price}`}</Typography>
-
-                        {/* Cantidad */}
-                        <Box sx={{ my: 2 }}>
-                            <Typography variant='subtitle2'>Cantidad</Typography>
-                            <ItemCounter
-                               currentValue={ tempCartProduct.quantity }
-                               updatedQuantity={ onUpdateQuantity  }
-                               maxValue={ product.inStock > 10 ? 10: product.inStock}
-                            />
-                            <SizeSelector
-                                sizes={ product.sizes }
-                                selectedSize={ tempCartProduct.size }
-                                onSelectedSize={ selectedSize }
-                            />
-                        </Box>
-
-
-                        {/* Agregar al carrito */}
-                          {
-                            (product.inStock > 0)
-                            ? (
-                                <Button 
-                                  color="secondary" 
-                                  className='circular-btn'
-                                  onClick={ onAddProduct }
-                                >
-                                  {
-                                    tempCartProduct.size
-                                      ? 'Agregar al carrito'
-                                      : 'Seleccione una talla'
-                                  }
-                                </Button>
-                            )
-                            : (
-                              <Chip label="No hay disponibles" color="error" variant='outlined' />
-                            )
-                          }
-
-                        {/* <Chip label="No hay disponibles" color="error" variant='outlined' /> */}
-
-                        {/* Descripción */}
-                        <Box sx={{ mt: 3 }}>
-                            <Typography variant='subtitle2'>Descripción</Typography>
-                            <Typography variant='body2'>{product.description}</Typography>
-                        </Box>
-
-                    </Box>
-                </Grid>
+            {/* Cantidad */}
+            <Box sx={{ my: 2 }}>
+              <Typography variant='subtitle2'>Cantidad</Typography>
+              <ItemCounter 
+                currentValue={ tempCartProduct.quantity }
+                updatedQuantity={ onUpdateQuantity  }
+                maxValue={ product.inStock > 10 ? 10: product.inStock }
+              />
+              <SizeSelector 
+                // selectedSize={ product.sizes[2] } 
+                sizes={ product.sizes }
+                selectedSize={ tempCartProduct.size }
+                onSelectedSize={ selectedSize }
+              />
+            </Box>
 
 
-            </Grid>
+            {/* Agregar al carrito */}
+            {
+              (product.inStock > 0)
+               ? (
+                  <Button 
+                    color="secondary" 
+                    className='circular-btn'
+                    onClick={ onAddProduct }
+                  >
+                    {
+                      tempCartProduct.size
+                        ? 'Agregar al carrito'
+                        : 'Seleccione una talla'
+                    }
+                  </Button>
+               )
+               : (
+                 <Chip label="No hay disponibles" color="error" variant='outlined' />
+               )
+            }
 
-        </ShopLayout>
+
+            {/* Descripción */}
+            <Box sx={{ mt:3 }}>
+              <Typography variant='subtitle2'>Descripción</Typography>
+              <Typography variant='body2'>{ product.description }</Typography>
+            </Box>
+
+          </Box>
+        </Grid>
+
+
+      </Grid>
+
+    </ShopLayout>
     )
 }
 
@@ -180,11 +181,6 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
   
 
 export default ProductPage
-
-
-function addProductToCart(tempCartProduct: any) {
-  throw new Error('Function not implemented.');
-}
 // getServerSideProps 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time

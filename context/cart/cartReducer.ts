@@ -40,6 +40,7 @@ export const cartReducer = ( state: CartState, action: CartActionType ): CartSta
       case '[Cart] - Change cart quantity':
          return {
             ...state,
+//toma el state actualizado y hace una cuenta acumulativa de un producto ya agregado pero con distinto size 
             cart: state.cart.map( product => {
                if ( product._id !== action.payload._id ) return product;
                if ( product.size !== action.payload.size ) return product;
