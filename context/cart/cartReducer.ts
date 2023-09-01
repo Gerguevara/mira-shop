@@ -1,5 +1,6 @@
 
 
+import { ProductionQuantityLimits } from '@mui/icons-material';
 import { ICartProduct } from '../../interfaces';
 import { CartState } from './CartProvider';
 
@@ -40,16 +41,19 @@ export const cartReducer = ( state: CartState, action: CartActionType ): CartSta
       case '[Cart] - Change cart quantity':
          return {
             ...state,
-//toma el state actualizado y hace una cuenta acumulativa de un producto ya agregado pero con distinto size 
             cart: state.cart.map( product => {
+               //No es es el mismo producto dejemoslo tal cual y retornemoslo al state
                if ( product._id !== action.payload._id ) return product;
+               // es el mismo pero con diferente  dejemoslo tal cual y se devuelve al state
                if ( product.size !== action.payload.size ) return product;
+               // es el mismo  producto lo modifica y lo retorna,( casi siempre de cantidad) y se retorna al state
                return action.payload;
             })
          }
 
 
       case '[Cart] - Remove product in cart':
+         // [para remover del carrito el producto debe coincidir con el mimos id y size]
          return {
             ...state,
             cart: state.cart.filter( product => !(product._id === action.payload._id && product.size === action.payload.size ))
