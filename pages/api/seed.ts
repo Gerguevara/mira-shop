@@ -1,5 +1,5 @@
 import { db, seedDatabase } from '@/db';
-import { Product } from '@/db-models';
+import { Product, User } from '@/db-models';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
@@ -13,8 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     await db.connect();
+    //deletes
+    await User.deleteMany();
     await Product.deleteMany();
+    //inserts
+    await User.insertMany( seedDatabase.initialData.users );
     await Product.insertMany( seedDatabase.initialData.products );
+    
     await db.disconnect();
     res.status(200).json({ message: 'Database successfully restarted' });
     return
