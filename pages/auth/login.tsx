@@ -38,8 +38,12 @@ const LoginPage = () => {
 
 
 
-        // Todo: navegar a la pantalla que el usuario estaba
-        router.replace('/');
+           // Todo: navegar a la pantalla que el usuario estaba, TOMANDO LOS QUERY PARAMS QUE SON AGHREGADOS 
+           //  DESDE DA CLICK AL BOTON DE LOGIN EN EL SIDE MENU (ESTE TOMA LA URL Y LA AGREGA COMO UN QUERY PARAM QUE NO AFECTA LA RUTA PERO SE GUARDA)
+           //Y ASI SABE CONDE REDIRIGIR AL USUARIO
+           const destination = router.query.p?.toString() || '/';
+           //REPLACE PARA REMOVERLO DEL HISTORIAL
+           router.replace(destination);
 
     }
 
@@ -104,7 +108,8 @@ const LoginPage = () => {
                         </Grid>
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
-                            <Link href="/auth/register">
+                             {/* envia como un ternario el callback url a donde el usuario debe volver */}
+                            <Link sx={{ cursor: 'pointer' }}  href={ router.query.p ? `/auth/register?p=${ router.query.p }`: '/auth/register' } >
                                 ¿No tienes cuenta?
                             </Link>
 

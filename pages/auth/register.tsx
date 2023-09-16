@@ -38,7 +38,10 @@ const RegisterPage = () => {
             return;
         }
 
-        // Todo: navegar a la pantalla que el usuario estaba
+
+        const destinationCallback = router.query.p?.toString() || '/';
+        //REPLACE PARA REMOVERLO DEL HISTORIAL
+        router.replace(destinationCallback);
         router.replace('/');
 
     }
@@ -49,19 +52,19 @@ const RegisterPage = () => {
                 <Box sx={{ width: 350, padding: '10px 20px' }}>
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
-                            <Typography variant='h1' component="h1" sx={{mb:'5'}}>Crear cuenta</Typography>
+                            <Typography variant='h1' component="h1" sx={{ mb: '5' }}>Crear cuenta</Typography>
 
                             <Chip
                                 label={errorMessage}
                                 color="error"
                                 icon={<ErrorOutline />}
                                 className="fadeIn"
-                                sx={{ display: showError ? 'flex' : 'none' , mt: '1rem'}}
+                                sx={{ display: showError ? 'flex' : 'none', mt: '1rem' }}
                             />
 
                         </Grid>
 
-                      
+
                         <Grid item xs={12}>
                             <TextField
                                 label="Nombre completo"
@@ -118,7 +121,7 @@ const RegisterPage = () => {
                         </Grid>
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
-                            <Link href="/auth/login">
+                            <Link href={router.query.p ? `/auth/login?p=${router.query.p}` : '/auth/login'}>
                                 ¿Ya tienes cuenta?
                             </Link>
                         </Grid>

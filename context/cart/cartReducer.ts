@@ -5,13 +5,14 @@ import { ICartProduct } from '../../interfaces';
 import { CartState } from './CartProvider';
 
 
-type CartActionType = 
-   | { type: '[Cart] - LoadCart from cookies | storage', payload: ICartProduct[] } 
+type CartActionType =
+   | { type: '[Cart] - LoadCart from cookies | storage', payload: ICartProduct[] }
    | { type: '[Cart] - Update products in cart', payload: ICartProduct[] }
    | { type: '[Cart] - Change cart quantity', payload: ICartProduct }
    | { type: '[Cart] - Remove product in cart', payload: ICartProduct }
-   | { 
-      type: '[Cart] - Update order summary', 
+   | { type: '[Cart] - Set Cart As Loaded' }
+   | {
+      type: '[Cart] - Update order summary',
       payload: {
          numberOfItems: number;
          subTotal: number;
@@ -21,31 +22,32 @@ type CartActionType =
    }
 
 
-export const cartReducer = ( state: CartState, action: CartActionType ): CartState => {
+export const cartReducer = (state: CartState, action: CartActionType): CartState => {
 
    switch (action.type) {
       case '[Cart] - LoadCart from cookies | storage':
          return {
             ...state,
+            isLoaded: true,
             cart: [...action.payload]
-          }
+         }
 
 
       case '[Cart] - Update products in cart':
          return {
             ...state,
-            cart: [ ...action.payload ]
+            cart: [...action.payload]
          }
 
 
       case '[Cart] - Change cart quantity':
          return {
             ...state,
-            cart: state.cart.map( product => {
+            cart: state.cart.map(product => {
                //No es es el mismo producto dejemoslo tal cual y retornemoslo al state
-               if ( product._id !== action.payload._id ) return product;
+               if (product._id !== action.payload._id) return product;
                // es el mismo pero con diferente  dejemoslo tal cual y se devuelve al state
-               if ( product.size !== action.payload.size ) return product;
+               if (product.size !== action.payload.size) return product;
                // es el mismo  producto lo modifica y lo retorna,( casi siempre de cantidad) y se retorna al state
                return action.payload;
             })
@@ -56,7 +58,7 @@ export const cartReducer = ( state: CartState, action: CartActionType ): CartSta
          // [para remover del carrito el producto debe coincidir con el mimos id y size]
          return {
             ...state,
-            cart: state.cart.filter( product => !(product._id === action.payload._id && product.size === action.payload.size ))
+            cart: state.cart.filter(product => !(product._id === action.payload._id && product.size === action.payload.size))
          }
 
       case '[Cart] - Update order summary':
@@ -64,9 +66,14 @@ export const cartReducer = ( state: CartState, action: CartActionType ): CartSta
             ...state,
             ...action.payload
          }
+      case '[Cart] - Set Cart As Loaded':
+         return {
+            ...state,
+            isLoaded: true,
+         }
 
-       default:
-          return state;
+      default:
+         return state;
    }
 
 }

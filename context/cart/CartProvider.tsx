@@ -5,6 +5,7 @@ import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 
 export interface CartState {
+    isLoaded: boolean;
     cart: ICartProduct[];
     numberOfItems: number;
     subTotal: number;
@@ -14,6 +15,7 @@ export interface CartState {
 
 
 const CART_INITIAL_STATE: CartState = {
+    isLoaded: false,
     cart: [],
     numberOfItems: 0,
     subTotal: 0,
@@ -34,10 +36,15 @@ export const CartProvider: FC<Props> = ({ children }) => {
         // validacion con try catch por si no la cookie fue manipulada y no se puede parsear, se hace un reset a vacio
         try {
             const cookieProducts = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : []
-            console.log('', cookieProducts);
+            //  if para evidar doble dispatch cuanto esta en modo desarrollo
             if (cookieProducts[0]) {
                 dispatch({ type: '[Cart] - LoadCart from cookies | storage', payload: cookieProducts });
+                return;
             }
+            // dispatch unicamente al is loaded para que tenga la bandera habilitada
+            dispatch({ type: '[Cart] - Set Cart As Loaded' });
+
+
         } catch (error) {
             console.log('error');
             dispatch({ type: '[Cart] - LoadCart from cookies | storage', payload: [] });
@@ -107,6 +114,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
 
     return (
         <CartContext.Provider value={{
+            //    el state ya contiene todas las propiedades de cart state
             ...state,
             // Methods
             addProductToCart,
