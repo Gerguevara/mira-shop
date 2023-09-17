@@ -1,7 +1,7 @@
 import { FC, useEffect, useReducer } from 'react';
 import Cookie from 'js-cookie';
 
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, ShippingAddress } from '@/interfaces';
 import { CartContext, cartReducer } from './';
 
 export interface CartState {
@@ -11,6 +11,7 @@ export interface CartState {
     subTotal: number;
     tax: number;
     total: number;
+    shippingAddress?: ShippingAddress;
 }
 
 
@@ -21,6 +22,7 @@ const CART_INITIAL_STATE: CartState = {
     subTotal: 0,
     tax: 0,
     total: 0,
+    shippingAddress: undefined
 }
 
 interface Props {
@@ -112,6 +114,21 @@ export const CartProvider: FC<Props> = ({ children }) => {
     }
 
 
+    const updateAddress = (address: ShippingAddress) => {
+        // guarda en las cookies la direction y luego la pone en el store
+        Cookie.set('firstName', address.firstName);
+        Cookie.set('lastName', address.lastName);
+        Cookie.set('address', address.address);
+        Cookie.set('address2', address.address2 || '');
+        Cookie.set('zip', address.zip);
+        Cookie.set('city', address.city);
+        Cookie.set('country', address.country);
+        Cookie.set('phone', address.phone);
+
+        dispatch({ type: '[Cart] - Update Address', payload: address });
+    }
+
+
     return (
         <CartContext.Provider value={{
             //    el state ya contiene todas las propiedades de cart state
@@ -120,6 +137,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
             addProductToCart,
             removeCartProduct,
             updateCartQuantity,
+            updateAddress
         }}>
             {children}
         </CartContext.Provider>

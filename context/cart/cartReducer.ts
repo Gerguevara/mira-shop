@@ -1,7 +1,6 @@
 
 
-import { ProductionQuantityLimits } from '@mui/icons-material';
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, ShippingAddress } from '@/interfaces';;
 import { CartState } from './CartProvider';
 
 
@@ -10,7 +9,9 @@ type CartActionType =
    | { type: '[Cart] - Update products in cart', payload: ICartProduct[] }
    | { type: '[Cart] - Change cart quantity', payload: ICartProduct }
    | { type: '[Cart] - Remove product in cart', payload: ICartProduct }
-   | { type: '[Cart] - Set Cart As Loaded' }
+   | { type: '[Cart] - LoadAddress from Cookies', payload: ShippingAddress }
+   | { type: '[Cart] - Update Address', payload: ShippingAddress } |
+   { type: '[Cart] - Set Cart As Loaded' }
    | {
       type: '[Cart] - Update order summary',
       payload: {
@@ -70,6 +71,13 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
          return {
             ...state,
             isLoaded: true,
+         }
+
+      case '[Cart] - Update Address':
+      case '[Cart] - LoadAddress from Cookies':
+         return {
+            ...state,
+            shippingAddress: action.payload
          }
 
       default:
