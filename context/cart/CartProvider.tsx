@@ -53,6 +53,26 @@ export const CartProvider: FC<Props> = ({ children }) => {
         }
     }, []);
 
+    // toma el adrees de los cookies y los agrega al state, en la primera caga
+    useEffect(() => {
+        // sei es la primera vez que usamos la aplicacio usa solo el  first name como valdacion pq  todos los campos son requeridos
+        //y se guardan al mismop tiempo esto evita hacer el dispatch innecesariamente
+        if (Cookie.get('firstName')) {
+            const shippingAddress = {
+                firstName: Cookie.get('firstName') || '',
+                lastName: Cookie.get('lastName') || '',
+                address: Cookie.get('address') || '',
+                address2: Cookie.get('address2') || '',
+                zip: Cookie.get('zip') || '',
+                city: Cookie.get('city') || '',
+                country: Cookie.get('country') || '',
+                phone: Cookie.get('phone') || '',
+            }
+
+            dispatch({ type: '[Cart] - LoadAddress from Cookies', payload: shippingAddress })
+        }
+    }, [])
+
     // Guarda el carrito con los aritculos cookies
     useEffect(() => {
         Cookie.set('cart', JSON.stringify(state.cart));
