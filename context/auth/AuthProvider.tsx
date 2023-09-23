@@ -8,6 +8,7 @@ import { tesloApi } from '@/api';
 import axios from 'axios';
 import { AuthContext } from './Authcontext';
 import { useRouter } from 'next/router';
+import { useSession, signOut  } from 'next-auth/react';
 
 export interface AuthState {
     isLoggedIn: boolean;
@@ -28,14 +29,25 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
     const router = useRouter();
+    //context desde nextAuth
+    const { data, status } = useSession();
 
     useEffect(() => {
-        checkToken();
-    }, [])
+        // si la session esta activa con el  provider de next auth y ya no esta pendiendien o unAuthorize hace el dispatch de login
+        //para poner la informacion del usuario en el estado
+        if (status === 'authenticated') {
+            console.log( data );
+            dispatch({ type: '[Auth] - Login', payload: data?.user as IUser })
+        }
+    }, [status, data])
+
+    // useEffect(() => {
+    //     checkToken();
+    // }, [])
 
     const checkToken = async () => {
 
-        if(!Cookies.get('token')) return;
+        if (!Cookies.get('token')) return;
 
         try {
             const { data } = await tesloApi.get('/user/validate-token');
@@ -92,10 +104,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
 
     const logout = () => {
-        Cookies.remove('token');
+        // Cookies.remove('token');
         Cookies.remove('cart');
-        // PARA LIMPIAR TODO EL ESTADO DE LA APLICACION INCLUYENDO EL CARRIO Y EL US CONTEXT
-        router.reload();
+        Cookies.remove('firstName');
+        Cookies.remove('lastName');
+        Cookies.remove('address');
+        Cookies.remove('address2');
+        Cookies.remove('zip');
+        Cookies.remove('city');
+        Cookies.remove('country');
+        Cookies.remove('phone');
+        // router.reload();
+        signOut();
+
     }
 
 
